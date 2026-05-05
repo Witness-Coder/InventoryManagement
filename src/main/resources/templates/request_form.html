@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Request to be Added</title>
+	<link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+		<link rel="stylesheet" th:href="@{/css/invetory.css}">
+		<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+		        integrity="sha256-3fp7kVQms0X+0zH6lzCFHk2G5fXh1bLt5t8c6X0jYhU="
+		        crossorigin="anonymous"></script>
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-primary text-white">Send Request to Admin</div>
+        <div class="card-body">
+            <form th:action="@{/request-add}" th:object="${request}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" th:field="*{email}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" th:field="*{phone}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <input type="text" th:field="*{department}" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Send Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

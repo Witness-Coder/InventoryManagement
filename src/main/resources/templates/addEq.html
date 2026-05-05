@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Equipment</title>
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/invetory.css}">
+</head>
+<body>
+    <!-- Sidebar Toggle -->
+    <div class="hamburger" onclick="toggleSidebar()">
+        <i class="bi bi-list" style="color: black;"></i>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column justify-content-center align-items-start p-3"
+         id="sidebar"
+         style="height: 100vh; gap: 20px; background-color: #343a40;">
+         
+        <!-- Profile Image with Edit Icon -->
+        <div style="position: relative; width: 50px; height: 50px; cursor: pointer; margin-left: 20px;">
+            <a href="javascript:void(0)" onclick="openWorkerImagePopup()">
+                <img id="workerProfilePic"
+                     th:src="@{'/worker/profile-image/' + ${session.UserEmail}}"
+                     th:attr="data-email=${session.UserEmail}"
+                     alt="Profile"
+                     style="width:50px; height:50px; border-radius:50%;"
+                     onerror="this.style.display='none';
+                              this.insertAdjacentHTML('afterend',
+                              '<i class=\'bi bi-person-circle\' style=\'font-size:50px;margin-left:0;color:#6c757d;\'></i>');"/>
+            </a>
+            <i class="bi bi-pencil-fill"
+               style="position: absolute; bottom:-2px; right:-2px; font-size:18px; color:white;
+                      background-color:#0d6efd; border-radius:50%; padding:2px; cursor:pointer;"
+               onclick="document.getElementById('workerImageInput').click()"></i>
+            <input type="file" id="workerImageInput" accept="image/*" style="display:none;" 
+                   onchange="uploadWorkerProfileImage(this)">
+        </div>
+
+        <h6 style="color:white; padding-left:10px;" th:text="${username}"></h6>
+
+        <a class="sidebar-a" href="/invet"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a class="sidebar-a" href="/addEq"><i class="bi bi-plus-circle"></i> Add to Inventory</a>
+        <a class="sidebar-a" href="/change-password"><i class="bi bi-key"></i> Change Password</a>
+        <a class="sidebar-a" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </div>
+
+    <!-- Logged-in Info -->
+    <div class="container mt-3">
+        <div class="alert alert-info">
+            <h3>Logged in as: <strong th:text="${Useremail}"></strong></h3>
+            <h4>Department: <strong th:text="${department}"></strong></h4>
+        </div>
+    </div>
+
+    <!-- Add Equipment Form -->
+    <div class="container mt-5">
+        <div class="card shadow p-4">
+            <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+            <div th:if="${message2}" class="alert alert-danger" th:text="${message2}"></div>
+
+            <h2 class="mb-4 text-center">Add Office Equipment</h2>
+
+            <form th:action="@{/saveEq}" th:object="${equipment}" method="post">
+                <div class="mb-3">
+                    <label for="codeNo" class="form-label">Equipment Code No</label>
+                    <input type="text" class="form-control" id="codeNo"
+                           th:field="*{codeNo}" placeholder="Enter code number" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Equipment Name</label>
+                    <input type="text" class="form-control" id="name"
+                           th:field="*{name}" placeholder="Enter name" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script th:src="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/invetory.js}"></script>
+</body>
+</html>

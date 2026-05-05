@@ -1,0 +1,117 @@
+.index{
+	margin-top: 100px;
+}
+
+.header-images{
+	height: 100px;
+	width: 100px;
+}
+.iBody{
+	  background-image: url('/images/Jengo la Halmashauri.jpg');
+	  background-repeat: no-repeat;
+	  background-size: contain;      
+	  background-position: center;   
+	  background-attachment: fixed; 
+	  
+}
+
+.login-box {
+      width: 450px;
+      padding: 30px;
+      background-color: white;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+	  margin-left: 20px;
+    }
+
+	.sidebar {
+	        height: 100%;
+	        width: 150px;
+	        position: fixed;
+	        top: 0;
+	        left: -150px;
+			text-align: center;
+	        background-color: #212529; /* dark like your navbar */
+	        padding-top: 60px;
+	        transition: 0.3s;
+	        z-index: 1050;
+	    }
+
+	    .sidebar-a {
+	        padding: 10px 25px;
+	        text-decoration: none;
+	        font-size: 12px;
+	        color: white;
+	        display: block;
+	    }
+
+	    .sidebar-a:hover {
+	        background-color: #343a40;
+	    }
+
+	    .hamburger {
+	        position: fixed;
+	        top: 15px;
+	        left: 15px;
+	        font-size: 28px;
+	        cursor: pointer;
+	        color: white;
+	        z-index: 1100;
+	    }
+
+	    .sidebar-open .sidebar {
+	        left: 0;
+	    }
+
+	    .sidebar-open .main-content {
+	        margin-left: 150px;
+	    }
+
+	    .main-content {
+	        transition: margin-left 0.3s;
+	    }
+		body.sidebar-open .hamburger {
+		    display: none;
+		}
+		
+		/* Popup background */
+		.popup {
+		    display: none; 
+		    position: fixed;
+		    z-index: 999;
+		    padding-top: 60px;
+		    left: 0;
+		    top: 0;
+		    width: 100%;
+		    height: 100%;
+		    overflow: auto; 
+		    background-color: rgba(0,0,0,0.8);
+		}
+
+		/* Image inside popup */
+		.popup-content {
+		    margin: auto;
+		    display: block;
+		    width: 200px;
+		    height: 200px;
+		    border-radius: 10px;
+		    object-fit: cover;
+		}
+
+		/* Close button */
+		.close {
+		    position: absolute;
+		    top: 15px;
+		    right: 35px;
+		    color: #fff;
+		    font-size: 40px;
+		    font-weight: bold;
+		    cursor: pointer;
+		}
+
+		.close:hover {
+		    color: #ccc;
+		}
+
+		
+		

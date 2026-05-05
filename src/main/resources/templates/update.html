@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Equipment</title>
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center" th:text="${PageTitle}">Update Equipment</h2>
+
+		<form method="post" action="/update" th:object="${equipment}">
+		    <input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:field="*{departmentId}" />
+			<input type="hidden" th:field="*{addedBy}" />
+		    <div class="mb-3">
+		        <label for="name">Name</label>
+		        <input type="text" class="form-control" th:field="*{name}" required />
+		    </div>
+
+		    <div class="mb-3">
+		        <label for="codeNo">Code</label>
+		        <input type="text" class="form-control" th:field="*{codeNo}" required />
+		    </div>
+
+		    
+
+		    <button type="submit" class="btn btn-primary w-100">UPDATE</button>
+		</form>
+    </div>
+</body>
+</html>

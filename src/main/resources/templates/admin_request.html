@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Requests</title>
+    <link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/invetory.css}">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-3fp7kVQms0X+0zH6lzCFHk2G5fXh1bLt5t8c6X0jYhU="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Requests</h3>
+            <div class="position-relative">
+                <i class="bi bi-envelope fs-4"></i>
+                <span th:text="${unreadCount}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+            </div>
+        </div>
+
+        <!-- Requests Table -->
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="req : ${requests}">
+                    <td th:text="${req.name}"></td>
+                    <td th:text="${req.email}"></td>
+                    <td th:text="${req.phone}"></td>
+                    <td th:text="${req.department}"></td>
+                    <td>
+                        <span th:text="${req.readStatus} ? 'Read' : 'Unread'" 
+                              th:classappend="${req.readStatus} ? 'badge bg-success' : 'badge bg-warning'"></span>
+                    </td>
+                    <td>
+                        <a th:href="@{'/requests/addWorker/' + ${req.id}}" class="btn btn-sm btn-success">Add</a>
+                        <a th:href="@{'/requests/ignore/' + ${req.id}}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('Are you sure you want to ignore this request?')">Ignore</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
