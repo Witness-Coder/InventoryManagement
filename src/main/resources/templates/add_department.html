@@ -2,87 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Add Department</title>
+
     <link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
     <link rel="stylesheet" th:href="@{/css/invetory.css}">
 </head>
-<body class="bg-light">
-    <!-- Sidebar Toggle -->
-    <div class="hamburger" onclick="toggleSidebar()">
-        <i style="color: black;" class="bi bi-list"></i>
+
+<body>
+
+<!-- HAMBURGER -->
+<div class="hamburger" onclick="toggleSidebar()">
+    <i class="bi bi-list"></i>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+    <div class="profile-box">
+        <a href="javascript:void(0)" onclick="openImagePopup()">
+            <img th:src="@{/admin/profile-image}"
+                 alt="Profile Image"
+                 style="width:50px;height:50px;border-radius:50%;object-fit:cover;"
+                 onerror="this.style.display='none';
+                 this.insertAdjacentHTML('afterend','<i class=\'bi bi-person-circle\' style=\'font-size:50px;color:#6c757d;\'></i>');">
+        </a>
+
+        <i class="bi bi-pencil-fill edit-icon"
+           onclick="document.getElementById('imageInput').click()"></i>
+
+        <input type="file" id="imageInput" hidden
+               onchange="uploadProfileImage(this)">
     </div>
 
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div style="position: relative; display: inline-block;">
-            <a href="javascript:void(0)" onclick="openImagePopup()">
-                <img th:src="@{/admin/profile-image}"
-                     alt="Profile Image"
-                     onerror="this.style.display='none';
-                              this.insertAdjacentHTML('afterend',
-                              '<i class=\'bi bi-person-circle\' style=\'font-size:50px;margin-left:45px;color:#6c757d;\'></i>');"
-                     style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
-            </a>
-            <i class="bi bi-pencil-fill"
-               style="position: absolute; bottom: 0; right: 0; font-size: 16px; color: #fff; background-color: #0d6efd; border-radius: 50%; padding: 2px; cursor: pointer;"
-               onclick="document.getElementById('imageInput').click()"></i>
+    <h6 style="color:white;" th:text="${username}"></h6>
 
-            <!-- Hidden File Input -->
-            <input type="file" id="imageInput" name="imageFile" accept="image/*" style="display:none;"
-                   onchange="uploadProfileImage(this)">
-        </div>
+    <a class="sidebar-a" href="/adminDash"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="sidebar-a" href="/addWorker"><i class="bi bi-plus-circle"></i> Add HoD</a>
+    <a class="sidebar-a" href="/add"><i class="bi bi-plus-circle"></i> Add Department</a>
+    <a class="sidebar-a" href="/department"><i class="bi bi-journal-bookmark"></i> Departments</a>
+    <a class="sidebar-a btn btn-success text-white" th:href="@{/generate-report}" target="_blank">PDF Report</a>
+    <a class="sidebar-a" href="/change-password"><i class="bi bi-key"></i> Change Password</a>
+    <a class="sidebar-a" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a>
 
-        <h6 style="color: white; padding-left: 10px;" th:text="${username}"></h6>
+</div>
 
-        <a class="sidebar-a" href="/adminDash"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
-        <a class="sidebar-a" href="/addWorker"><i class="bi bi-plus-circle"></i> Add HoD to new Dpt</a>
-        <a class="sidebar-a" href="/add"><i class="bi bi-plus-circle"></i> Add Department</a>
-        <a class="sidebar-a" href="/department"><i class="bi bi-journal-bookmark"></i> Department List</a>
-        <a class="btn btn-success sidebar-a" th:href="@{/generate-report}" target="_blank"> PDF Report</a>
-        <a class="sidebar-a" href="/change-password"><i class="bi bi-key"></i> Change Password</a>
-        <a class="sidebar-a" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a>
-    </div>
+<!-- MAIN PAGE -->
+<div class="dept-page">
 
-    <!-- Main Content -->
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <!-- Department Form -->
-                <div class="card shadow-lg border-0 rounded-4">
-                    <div class="card-header bg-primary text-white text-center rounded-top-4">
-                        <h4 class="mb-0">Add New Department</h4>
-                    </div>
-                    <div class="card-body p-4">
-                        <form th:action="@{/departments/add}" method="post" th:object="${department}">
-                            <!-- Department Name -->
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Department Name</label>
-                                <input type="text" th:field="*{deptName}" class="form-control"
-                                       placeholder="Enter department name" required>
-                            </div>
+    <div class="dept-card">
 
-                            <!-- Submit Button -->
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-success btn-lg">Save Department</button>
-                            </div>
+        <h3 class="text-center mb-4">Add New Department</h3>
 
-                            <!-- Alerts -->
-                            <div th:if="${errorMessage}" class="alert alert-danger mt-3">
-                                <span th:text="${errorMessage}"></span>
-                            </div>
-                            <div th:if="${param.success}" class="alert alert-success mt-3">
-                                Department added successfully!
-                            </div>
-                        </form>
-                    </div>
-                </div>
+        <form th:object="${department}" th:action="@{/departments/add}" method="post">
+
+            <!-- Department Name -->
+            <div class="mb-3">
+                <label class="form-label">Department Name</label>
+                <input type="text"
+                       th:field="*{deptName}"
+                       class="form-control"
+                       placeholder="Enter department name"
+                       required>
             </div>
-        </div>
+
+            <!-- BUTTON -->
+            <button class="btn btn-success w-100">
+                Save Department
+            </button>
+
+            <!-- MESSAGES -->
+            <div th:if="${errorMessage}" class="alert alert-danger mt-3">
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <div th:if="${param.success}" class="alert alert-success mt-3">
+                Department added successfully!
+            </div>
+
+        </form>
+
     </div>
 
-    <!-- Scripts -->
-    <script th:src="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js/invetory.js}"></script>
+</div>
+
+<script th:src="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/invetory.js}"></script>
+
 </body>
 </html>

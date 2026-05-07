@@ -109,7 +109,7 @@ public class InvetoryController {
 	        session.setAttribute("deptId", workers.getDepartment().getId());
 	        return "redirect:/invet";
 	    } else {
-	        model.addAttribute("error", "Invalid email or password");
+	    	model.addAttribute("error", "Wrong email or password!");
 	        return "redirect:/login";
 	    }
 	}
@@ -133,7 +133,7 @@ public class InvetoryController {
 	    String role = (String) session.getAttribute("UserRole");
 
 	    if (!newPassword.equals(confirmPassword)) {
-	        model.addAttribute("message", "New passwords do not match!");
+	        model.addAttribute("error", "New passwords do not match!");
 	        return "change-password";
 	    }
 
@@ -144,12 +144,12 @@ public class InvetoryController {
 	    } else if ("WORKER".equalsIgnoreCase(role)) {
 	        success = workerServ.changePassword(email, currentPassword, newPassword);
 	    } else {
-	        model.addAttribute("message", "User role not recognized!");
+	        model.addAttribute("error", "User role not recognized!");
 	        return "change-password";
 	    }
 
 	    if (!success) {
-	        model.addAttribute("message", "Current password is incorrect or user not found!");
+	        model.addAttribute("error", "Current password is incorrect or user not found!");
 	        return "change-password";
 	    }
 
@@ -160,12 +160,15 @@ public class InvetoryController {
 		
 	
 	@GetMapping("/add")
-    public String showAddDepartmentForm(Model model) {
-        model.addAttribute("department", new DepartmentDto());
-        model.addAttribute("departments", departmentService.getAllDepartments());
-        
-        return "add_department";
-    }
+	public String showAddDepartmentForm(Model model) {
+
+	    model.addAttribute("department", new DepartmentDto());
+
+	    model.addAttribute("departments",
+	            departmentService.getAllDepartments());
+
+	    return "add_department";
+	}
 
     @PostMapping("/add")
     public String addDepartment(@ModelAttribute("department") DepartmentDto departmentDto, Model model) {

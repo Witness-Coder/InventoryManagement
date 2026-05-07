@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Workers {
@@ -24,7 +25,7 @@ public class Workers {
     @Column(name="password")
     private String password;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "department_id")
     private Departments department;
 

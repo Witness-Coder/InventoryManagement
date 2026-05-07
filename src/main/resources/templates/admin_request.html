@@ -2,55 +2,224 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Admin Requests</title>
-    <link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+
+    <!-- Main CSS -->
     <link rel="stylesheet" th:href="@{/css/invetory.css}">
+
+    <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-3fp7kVQms0X+0zH6lzCFHk2G5fXh1bLt5t8c6X0jYhU="
             crossorigin="anonymous"></script>
 </head>
-<body>
-    <div class="container mt-5">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Requests</h3>
-            <div class="position-relative">
-                <i class="bi bi-envelope fs-4"></i>
-                <span th:text="${unreadCount}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+
+<body class="admin-request-body">
+
+    <!-- Hamburger -->
+    <div class="hamburger" onclick="toggleSidebar()">
+        <i style="color:black;" class="bi bi-list"></i>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+
+        <!-- Profile -->
+        <div class="profile-box">
+
+            <div class="profile-wrapper">
+
+                <a href="javascript:void(0)" onclick="openImagePopup()">
+                    <img th:src="@{/admin/profile-image}"
+                         alt="Profile"
+                         onerror="this.style.display='none';
+                         this.insertAdjacentHTML('afterend',
+                         '<i class=\'bi bi-person-circle default-icon\'></i>');"/>
+                </a>
+
+                <!-- Edit Icon -->
+                <i class="bi bi-pencil-fill edit-icon"
+                   onclick="document.getElementById('imageInput').click()"></i>
+
+                <!-- Hidden Input -->
+                <input type="file"
+                       id="imageInput"
+                       accept="image/*"
+                       onchange="uploadProfileImage(this)">
             </div>
+
         </div>
 
-        <!-- Requests Table -->
-        <table class="table table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Department</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="req : ${requests}">
-                    <td th:text="${req.name}"></td>
-                    <td th:text="${req.email}"></td>
-                    <td th:text="${req.phone}"></td>
-                    <td th:text="${req.department}"></td>
-                    <td>
-                        <span th:text="${req.readStatus} ? 'Read' : 'Unread'" 
-                              th:classappend="${req.readStatus} ? 'badge bg-success' : 'badge bg-warning'"></span>
-                    </td>
-                    <td>
-                        <a th:href="@{'/requests/addWorker/' + ${req.id}}" class="btn btn-sm btn-success">Add</a>
-                        <a th:href="@{'/requests/ignore/' + ${req.id}}" class="btn btn-sm btn-danger"
-                           onclick="return confirm('Are you sure you want to ignore this request?')">Ignore</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Username -->
+        <h6 class="sidebar-username"
+            th:text="${username}"></h6>
+
+        <!-- Links -->
+        <a class="sidebar-a" href="/adminDash">
+            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+
+        <a class="sidebar-a" href="/addWorker">
+            <i class="bi bi-plus-circle"></i> Add HoD
+        </a>
+
+        <a class="sidebar-a" href="/add">
+            <i class="bi bi-building-add"></i> Add Department
+        </a>
+
+        <a class="sidebar-a" href="/department">
+            <i class="bi bi-journal-bookmark"></i> Departments
+        </a>
+
+        <a class="sidebar-a active-sidebar" href="/admin/requests">
+            <i class="bi bi-envelope"></i> Requests
+        </a>
+
+        <a class="sidebar-a" href="/change-password">
+            <i class="bi bi-key"></i> Change Password
+        </a>
+
+        <a class="sidebar-a" href="/logout">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+
     </div>
+
+    <!-- Main Content -->
+    <div class="admin-request-container">
+
+        <!-- Header -->
+        <div class="request-header-card">
+
+            <div>
+                <h2 class="request-main-title">
+                    Requests Management
+                </h2>
+
+                <p class="request-small-text">
+                    Manage all incoming requests from workers
+                </p>
+            </div>
+
+            <!-- Notification -->
+            <div class="request-notification">
+
+                <i class="bi bi-envelope-fill"></i>
+
+                <span th:text="${unreadCount}"
+                      class="request-badge"></span>
+
+            </div>
+
+        </div>
+
+        <!-- Table Card -->
+        <div class="request-table-card">
+
+            <div class="table-responsive">
+
+                <table class="table request-table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="req : ${requests}">
+
+                            <td>
+                                <div class="fw-semibold"
+                                     th:text="${req.name}">
+                                </div>
+                            </td>
+
+                            <td th:text="${req.email}"></td>
+
+                            <td th:text="${req.phone}"></td>
+
+                            <td>
+                                <span class="department-pill"
+                                      th:text="${req.department}">
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <span th:text="${req.readStatus} ? 'Read' : 'Unread'"
+                                      th:classappend="${req.readStatus}
+                                      ? 'request-status-read'
+                                      : 'request-status-unread'">
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <div class="request-actions">
+
+                                    <a th:href="@{'/requests/addWorker/' + ${req.id}}"
+                                       class="btn btn-success btn-sm request-btn-success">
+
+                                        <i class="bi bi-check-circle"></i>
+                                        Add
+
+                                    </a>
+
+                                    <a th:href="@{'/requests/ignore/' + ${req.id}}"
+                                       class="btn btn-danger btn-sm request-btn-danger"
+                                       onclick="return confirm('Are you sure you want to ignore this request?')">
+
+                                        <i class="bi bi-trash"></i>
+                                        Ignore
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <!-- Empty -->
+                <div th:if="${#lists.isEmpty(requests)}"
+                     class="alert alert-warning text-center mt-4">
+
+                    No requests available.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script th:src="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
+
+    <script th:src="@{/js/invetory.js}"></script>
+
 </body>
 </html>

@@ -2,39 +2,143 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Request to be Added</title>
-	<link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
-		<link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
-		<link rel="stylesheet" th:href="@{/css/invetory.css}">
-		<script src="https://code.jquery.com/jquery-3.7.0.min.js"
-		        integrity="sha256-3fp7kVQms0X+0zH6lzCFHk2G5fXh1bLt5t8c6X0jYhU="
-		        crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" th:href="@{/css/invetory.css}">
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-3fp7kVQms0X+0zH6lzCFHk2G5fXh1bLt5t8c6X0jYhU="
+            crossorigin="anonymous"></script>
 </head>
-<body class="bg-light">
-<div class="container mt-5">
-    <div class="card mx-auto" style="max-width: 500px;">
-        <div class="card-header bg-primary text-white">Send Request to Admin</div>
-        <div class="card-body">
-            <form th:action="@{/request-add}" th:object="${request}" method="post">
-                <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input type="text" th:field="*{name}" class="form-control" required>
+
+<body class="request-body">
+
+    <!-- Background Overlay -->
+    <div class="request-overlay">
+
+        <!-- Main Container -->
+        <div class="container py-5">
+
+            <div class="request-card mx-auto">
+
+                <!-- Logo -->
+                <div class="text-center mb-4">
+                    <img src="/images/thumb_97_102x110_0_0_crop.png"
+                         alt="Ukerewe Logo"
+                         class="request-logo">
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" th:field="*{email}" class="form-control" required>
+
+                <!-- Title -->
+                <div class="text-center mb-4">
+                    <h2 class="request-title">Send Request to Admin</h2>
+                    <p class="request-subtitle">
+                        Fill in your details to request access to the Inventory Management System
+                    </p>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Phone Number</label>
-                    <input type="text" th:field="*{phone}" class="form-control" required>
+
+                <!-- Alerts -->
+                <div th:if="${successMessage}" class="alert alert-success text-center">
+                    <span th:text="${successMessage}"></span>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Department</label>
-                    <input type="text" th:field="*{department}" class="form-control" required>
+
+                <div th:if="${errorMessage}" class="alert alert-danger text-center">
+                    <span th:text="${errorMessage}"></span>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Send Request</button>
-            </form>
+
+                <!-- Form -->
+                <form th:action="@{/request-add}"
+                      th:object="${request}"
+                      method="post">
+
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-person-fill"></i>
+                            Full Name
+                        </label>
+
+                        <input type="text"
+                               th:field="*{name}"
+                               class="form-control request-input"
+                               placeholder="Enter your full name"
+                               required>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-envelope-fill"></i>
+                            Email Address
+                        </label>
+
+                        <input type="email"
+                               th:field="*{email}"
+                               class="form-control request-input"
+                               placeholder="Enter your email"
+                               required>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-telephone-fill"></i>
+                            Phone Number
+                        </label>
+
+                        <input type="text"
+                               th:field="*{phone}"
+                               class="form-control request-input"
+                               placeholder="+255 XXX XXX XXX"
+                               pattern="(\+255|0)(6|7|4)\d{8}"
+                               required>
+                    </div>
+
+                    <!-- Department -->
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <i class="bi bi-building"></i>
+                            Department
+                        </label>
+
+                        <input type="text"
+                               th:field="*{department}"
+                               class="form-control request-input"
+                               placeholder="Enter department name"
+                               required>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit"
+                            class="btn request-btn w-100">
+                        <i class="bi bi-send-fill"></i>
+                        Send Request
+                    </button>
+
+                </form>
+
+                <!-- Footer -->
+                <div class="request-footer text-center mt-4">
+                    <small>
+                        UKEREWE DISTRICT COUNCIL INVENTORY MANAGEMENT SYSTEM
+                    </small>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
+
+    <!-- Bootstrap JS -->
+    <script th:src="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
+
 </body>
 </html>

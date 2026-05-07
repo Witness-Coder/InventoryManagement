@@ -1,108 +1,140 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Worker</title>
+
     <link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
     <link rel="stylesheet" th:href="@{/css/invetory.css}">
 </head>
+
 <body>
-    <!-- Hamburger for sidebar -->
-    <div class="hamburger" onclick="toggleSidebar()">
-        <i style="color: black;" class="bi bi-list"></i>
+
+<!-- HAMBURGER -->
+<div class="hamburger" onclick="toggleSidebar()">
+    <i class="bi bi-list"></i>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+    <div class="profile-box">
+        <a href="javascript:void(0)" onclick="openImagePopup()">
+            <img th:src="@{/admin/profile-image}" alt="Profile Image"
+                 style="width:50px;height:50px;border-radius:50%;object-fit:cover;"
+                 onerror="this.style.display='none';
+                 this.insertAdjacentHTML('afterend','<i class=\'bi bi-person-circle\' style=\'font-size:50px;color:#6c757d;\'></i>');">
+        </a>
+
+        <i class="bi bi-pencil-fill edit-icon"
+           onclick="document.getElementById('imageInput').click()"></i>
+
+        <input type="file" id="imageInput" hidden
+               onchange="uploadProfileImage(this)">
     </div>
 
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div style="position: relative; display: inline-block;">
-            <a href="javascript:void(0)" onclick="openImagePopup()">
-                <img th:src="@{/admin/profile-image}" alt="Profile Image"
-                     onerror="this.style.display='none';
-                              this.insertAdjacentHTML('afterend',
-                              '<i class=\'bi bi-person-circle\' style=\'font-size:50px;margin-left:45px;color:#6c757d;\'></i>');"
-                     style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
-            </a>
-            <i class="bi bi-pencil-fill"
-               style="position: absolute; bottom: 0; right: 0; font-size: 16px; color: #fff; background-color: #0d6efd; border-radius: 50%; padding: 2px; cursor: pointer;"
-               onclick="document.getElementById('imageInput').click()"></i>
-            <input type="file" id="imageInput" name="imageFile" accept="image/*" style="display:none;" 
-                   onchange="uploadProfileImage(this)">
-        </div>
+    <h6 style="color:white;" th:text="${username}"></h6>
 
-        <h6 style="color: white; padding-left: 10px;" th:text="${username}"></h6>
+    <a class="sidebar-a" href="/adminDash"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="sidebar-a" href="/addWorker"><i class="bi bi-plus-circle"></i> Add HoD</a>
+    <a class="sidebar-a" href="/add"><i class="bi bi-plus-circle"></i> Add Department</a>
+    <a class="sidebar-a" href="/department"><i class="bi bi-journal-bookmark"></i> Departments</a>
+    <a class="sidebar-a btn btn-success text-white" th:href="@{/generate-report}" target="_blank">PDF Report</a>
+    <a class="sidebar-a" href="/change-password"><i class="bi bi-key"></i> Change Password</a>
+    <a class="sidebar-a" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a>
 
-        <a class="sidebar-a" href="/adminDash"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
-        <a class="sidebar-a" href="/addWorker"><i class="bi bi-plus-circle"></i>Add HoD to new Dpt</a>
-        <a class="sidebar-a" href="/add"><i class="bi bi-plus-circle"></i>Add Department</a>
-        <a class="sidebar-a" href="/department"><i class="bi bi-journal-bookmark"></i>Department List</a>
-        <a class="btn btn-success sidebar-a" th:href="@{/generate-report}" target="_blank">PDF Report</a>
-        <a class="sidebar-a" href="/change-password"><i class="bi bi-key"></i> Change Password</a>
-        <a class="sidebar-a" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a>
+</div>
+
+<!-- PAGE -->
+<div class="add-worker-page">
+
+    <div class="login-box">
+
+        <h2 class="text-center">Add HoD to New Department</h2>
+
+        <form th:object="${worker}"
+              th:action="@{/workerSubmit}"
+              method="post">
+
+            <!-- NAME -->
+            <div class="mb-3">
+                <label>Name</label>
+                <input th:field="*{name}" class="form-control"
+                       placeholder="Enter name"
+                       th:readonly="${worker.requestId != null}" required>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="mb-3">
+                <label>Email</label>
+                <input th:field="*{email}" type="email" class="form-control"
+                       placeholder="Enter email"
+                       th:readonly="${worker.requestId != null}" required>
+            </div>
+
+            <!-- PHONE -->
+            <div class="mb-3">
+                <label>Phone</label>
+                <input th:field="*{phone}" class="form-control"
+                       placeholder="Enter phone"
+                       pattern="(\+255|0)(6|7|4)\d{8}"
+                       title="Tanzania phone number"
+                       required>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="mb-3">
+                <label>Password</label>
+                <input th:field="*{password}" type="password"
+                       class="form-control"
+                       th:value="${worker.requestId != null} ? 'Mwanza@123' : ''"
+                       th:readonly="${worker.requestId != null}"
+                       placeholder="Enter password"
+                       required>
+            </div>
+
+            <!-- DEPARTMENT -->
+            <div class="mb-3">
+                <label>Department</label>
+                <select th:field="*{departmentId}" class="form-select" required>
+                    <option value="" disabled selected>-- Select Department --</option>
+                    <option th:each="dept : ${departments}"
+                            th:value="${dept.id}"
+                            th:text="${dept.deptName}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- HOD CHECKBOX -->
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input"
+                       id="isHod" name="isHod" value="true">
+                <label class="form-check-label" for="isHod">
+                    Make this worker HOD
+                </label>
+            </div>
+
+            <!-- HIDDEN -->
+            <input type="hidden" th:field="*{requestId}">
+
+            <!-- BUTTON -->
+            <button class="btn btn-primary w-100">
+                SUBMIT
+            </button>
+
+            <!-- MESSAGES -->
+            <p th:if="${error}" th:text="${error}" class="text-danger"></p>
+            
+
+        </form>
+
     </div>
 
-    <!-- Main content -->
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Add HoD to New Department</h2>
-        <div class="text-center login-box">
-            <form th:object="${worker}" th:action="@{/workerSubmit}" method="post" class="border p-4 rounded shadow">
+</div>
 
-                <!-- Name -->
-                <div class="mb-3">
-                    <label for="name">Name</label>
-                    <input th:field="*{name}" type="text" class="form-control" placeholder="Enter name"
-                           th:readonly="${worker.requestId != null}" required />
-                </div>
+<script th:src="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/invetory.js}"></script>
 
-                <!-- Email -->
-                <div class="mb-3">
-                    <label for="email">Email</label>
-                    <input th:field="*{email}" type="email" class="form-control" placeholder="Enter email"
-                           th:readonly="${worker.requestId != null}" required />
-                </div>
-
-                <!-- Phone -->
-                <div class="mb-3">
-                    <label for="phone">Phone</label>
-                    <input th:field="*{phone}" type="text" class="form-control" placeholder="Enter phone"
-                           th:readonly="${worker.requestId != null}" pattern="(\+255|0)(6|7|4)\d{8}" 
-                           title="Tanzanian phone number required" required />
-                </div>
-
-                <!-- Password -->
-                <div class="mb-3">
-                    <label for="password">Password</label>
-                    <input th:field="*{password}" type="password" class="form-control"
-                           th:value="${worker.requestId != null} ? 'Mwanza@123' : ''"
-                           th:readonly="${worker.requestId != null}" placeholder="Enter password" required />
-                </div>
-
-                <!-- Department -->
-                <div class="mb-3">
-                    <label for="department">Department</label>
-                    <select th:field="*{departmentId}" class="form-select" required>
-                        <option value="" disabled selected>-- Select Department --</option>
-                        <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.deptName}"></option>
-                    </select>
-                </div>
-
-                <!-- HOD Checkbox -->
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="isHod" name="isHod" value="true">
-                    <label class="form-check-label" for="isHod">Make this worker the HOD of selected department</label>
-                </div>
-
-                <!-- Hidden requestId -->
-                <input type="hidden" th:field="*{requestId}" />
-
-                <button type="submit" class="btn btn-primary w-100">SUBMIT</button>
-
-                <p th:if="${error}" th:text="${error}" class="text-danger"></p>
-                <p th:if="${message3}" th:text="${message3}" class="text-success"></p>
-            </form>
-        </div>
-    </div>
-
-    <script th:src="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js/invetory.js}"></script>
 </body>
 </html>
