@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Worker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet"
+		          th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+
+		    <!-- Bootstrap Icons -->
+		    <link rel="stylesheet"
+		          th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+</head>
+
+<body>
+
+<div class="container mt-4">
+
+    <h3 class="text-center">Update Worker (HOD)</h3>
+
+    <form th:action="@{/worker/update}" method="post" th:object="${worker}">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <!-- NAME -->
+        <div class="mb-3">
+            <label>Name</label>
+            <input class="form-control" th:field="*{name}">
+        </div>
+
+        <!-- EMAIL -->
+        <div class="mb-3">
+            <label>Email</label>
+            <input class="form-control" th:field="*{email}">
+        </div>
+
+        <!-- PHONE -->
+        <div class="mb-3">
+            <label>Phone</label>
+            <input class="form-control" th:field="*{phone}">
+        </div>
+
+        <!-- PASSWORD (OPTIONAL UPDATE) -->
+        <div class="mb-3">
+            <label>Password</label>
+            <input type="password" class="form-control" th:field="*{password}">
+        </div>
+
+        <!-- DEPARTMENT (DISABLED - IMPORTANT) -->
+        <div class="mb-3">
+            <label>Department</label>
+            <input class="form-control"
+                   th:value="${worker.department.deptName}"
+                   disabled>
+        </div>
+
+        <!-- SUBMIT -->
+        <button class="btn btn-success w-100">
+            Save Changes & Update HOD
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

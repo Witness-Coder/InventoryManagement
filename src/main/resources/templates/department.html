@@ -20,26 +20,37 @@
 <div class="sidebar" id="sidebar">
 
     <div class="profile-box">
-        <a href="javascript:void(0)" onclick="openImagePopup()">
-            <img th:src="@{/admin/profile-image}"
-                 style="width:50px;height:50px;border-radius:50%;object-fit:cover;"
-                 onerror="this.style.display='none';
-                 this.insertAdjacentHTML('afterend','<i class=\'bi bi-person-circle\' style=\'font-size:50px;color:#6c757d;\'></i>');">
-        </a>
 
-        <i class="bi bi-pencil-fill edit-icon"
-            onclick="document.getElementById('imageInput').click()"></i>
+		<div class="profile-wrapper">
+			<a 
+		     onclick="openImagePopup('adminProfileImg', 'imagePopup', 'popupImage')">
 
-        <input type="file" id="imageInput" hidden
+		    <img id="adminProfileImg"
+		         th:src="@{/admin/profile-image}"
+		         alt="Profile Image"
+		         class="profile-img"
+		         onerror="this.style.display='none';
+		         this.insertAdjacentHTML('afterend','<i class=\'bi bi-person-circle\' style=\'font-size:50px;color:#6c757d;\'></i>');">
+			</a>
+		
+
+		<i class="bi bi-pencil-fill edit-icon"
+		   onclick="document.getElementById('imageInput').click()"></i>
+
+        <input type="file" id="imageInput" name="imageFile"
+               accept="image/*"
+               hidden
                onchange="uploadProfileImage(this)">
+		</div>
     </div>
 
-    <h6 style="color:white;" th:text="${username}"></h6>
+    <h6 class="text-white" th:text="${username}"></h6>
 
     <a class="sidebar-a" href="/adminDash"><i class="bi bi-speedometer2"></i> Dashboard</a>
     <a class="sidebar-a" href="/addWorker"><i class="bi bi-plus-circle"></i> Add HoD</a>
     <a class="sidebar-a" href="/add"><i class="bi bi-plus-circle"></i> Add Department</a>
     <a class="sidebar-a" href="/department"><i class="bi bi-journal-bookmark"></i> Departments</a>
+	<a class="sidebar-a" href="/hods"><i class="bi-person-badge"></i> HoDs</a>
     <a class="sidebar-a btn btn-success text-white" th:href="@{/generate-report}" target="_blank">PDF Report</a>
     <a class="sidebar-a" href="/change-password"><i class="bi bi-key"></i> Change Password</a>
     <a class="sidebar-a" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a>
@@ -107,6 +118,14 @@
 
     </div>
 
+</div>
+<!-- POPUP -->
+<div id="imagePopup" class="image-popup" style="display:none;">
+	<div class="popup-box">
+	    
+	    <span class="close-btn" onclick="closeImagePopup('imagePopup')">&times;</span>
+    	<img id="popupImage" class="popup-image">
+	</div>
 </div>
 
 <script th:src="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js}"></script>

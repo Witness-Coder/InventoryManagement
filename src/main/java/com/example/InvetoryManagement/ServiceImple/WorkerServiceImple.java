@@ -43,7 +43,16 @@ public class WorkerServiceImple implements WorkersService {
 	     Workers w = new Workers();
 	     w.setName(workerDto.getName());
 	     w.setEmail(workerDto.getEmail());
-	     w.setPassword(passwordEncoder.encode(workerDto.getPassword()));
+	     w.setPhone(workerDto.getPhone());
+	     String rawPassword;
+
+	     if(workerDto.getRequestId() != null) {
+	         rawPassword = "Mwanza@123"; // default for requests
+	     } else {
+	         rawPassword = workerDto.getPassword();
+	     }
+
+	     w.setPassword(passwordEncoder.encode(rawPassword));
 
 	     Departments dept = deptRepo.findById(workerDto.getDepartmentId())
 	             .orElseThrow(() -> new RuntimeException("Department not found"));

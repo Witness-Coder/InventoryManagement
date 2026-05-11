@@ -13,40 +13,45 @@
 
 <body>
 
-<!-- HAMBURGER -->
-<div class="hamburger" onclick="toggleSidebar()">
-    <i class="bi bi-list"></i>
-</div>
+	<!-- SIDEBAR -->
+	<div class="hamburger" onclick="toggleSidebar()">
+	    <i class="bi bi-list"></i>
+	</div>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
+	<div class="sidebar" id="sidebar">
 
-    <div class="profile-box">
-        <a href="javascript:void(0)" onclick="openWorkerImagePopup()">
-            <img id="workerProfilePic"
-                 th:src="@{'/worker/profile-image/' + ${session.UserEmail}}"
-                 alt="Profile"
-                 style="width:50px;height:50px;border-radius:50%;object-fit:cover;"
-                 onerror="this.style.display='none';
-                 this.insertAdjacentHTML('afterend','<i class=\'bi bi-person-circle\' style=\'font-size:50px;color:#6c757d;\'></i>');">
-        </a>
+		<div class="profile-box">
 
-        <i class="bi bi-pencil-fill edit-icon"
-           onclick="document.getElementById('workerImageInput').click()"></i>
+		    <div class="profile-wrapper">
+		        <a href="javascript:void(0)" onclick="openWorkerImagePopup()">
+		            <img id="workerProfilePic"
+		                 th:src="@{'/worker/profile-image/' + ${session.UserEmail}}"
+		                 th:attr="data-email=${session.UserEmail}"
+		                 alt="Profile"
+		                 onerror="this.style.display='none';
+		                 this.insertAdjacentHTML('afterend','<i class=\'bi bi-person-circle default-icon\'></i>');"/>
+		        </a>
 
-        <input type="file" id="workerImageInput" hidden
-               accept="image/*"
-               onchange="uploadWorkerProfileImage(this)">
-    </div>
+		        <!-- Pencil Icon -->
+		        <i class="bi bi-pencil-fill edit-icon"
+		           onclick="document.getElementById('workerImageInput').click()"></i>
 
-    <h6 style="color:white;" th:text="${username}"></h6>
+		        <!-- Hidden file input -->
+		        <input type="file"
+		               id="workerImageInput"
+		               accept="image/*"
+		               onchange="uploadWorkerProfileImage(this)">
+		    </div>
 
-    <a class="sidebar-a" href="/invet"><i class="bi bi-speedometer2"></i> Dashboard</a>
-    <a class="sidebar-a" href="/addEq"><i class="bi bi-plus-circle"></i> Add Equipment</a>
-    <a class="sidebar-a" href="/change-password"><i class="bi bi-key"></i> Change Password</a>
-    <a class="sidebar-a" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a>
+		</div>
 
-</div>
+	    <h6 th:text="${username}"></h6>
+
+	    <a class="sidebar-a" href="/invet">Dashboard</a>
+	    <a class="sidebar-a" href="/addEq">Add Inventory</a>
+	    <a class="sidebar-a" href="/change-password">Change Password</a>
+	    <a class="sidebar-a" href="/logout">Logout</a>
+	</div>
 
 <!-- INFO BOX -->
 <div class="container mt-3">
@@ -97,6 +102,18 @@
 
         </form>
 
+    </div>
+
+</div>
+
+<div id="workerImagePopup" class="image-popup" style="display:none;">
+    
+    <div class="popup-box">
+        
+        <span class="close-btn" onclick="closeWorkerImagePopup()">&times;</span>
+        
+        <img id="popupWorkerImage" class="popup-image">
+        
     </div>
 
 </div>

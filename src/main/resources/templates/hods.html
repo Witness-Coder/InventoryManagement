@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HOD Management</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Bootstrap -->
+	    <link rel="stylesheet"
+	          th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+
+	    <!-- Bootstrap Icons -->
+	    <link rel="stylesheet"
+	          th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+    <style>
+
+        body {
+            background: #f4f6f9;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .page-title {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .card-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .table thead {
+            background: #212529;
+            color: white;
+        }
+
+        .badge {
+            padding: 6px 10px;
+            border-radius: 20px;
+        }
+
+        .btn-sm {
+            margin-right: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .table-responsive {
+                font-size: 13px;
+            }
+
+            .btn-sm {
+                margin-bottom: 5px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3 class="text-center page-title">Departments & HOD Management</h3>
+
+    <div class="card-box">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>HOD Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="d : ${departments}">
+
+                    <!-- Department -->
+                    <td th:text="${d.deptName}"></td>
+
+                    <!-- HOD Name -->
+                    <td>
+                        <span th:if="${d.hod != null}" th:text="${d.hod.name}"></span>
+                        <span th:if="${d.hod == null}" class="text-muted">No HOD</span>
+                    </td>
+
+                    <!-- Email -->
+                    <td>
+                        <span th:if="${d.hod != null}" th:text="${d.hod.email}"></span>
+                        <span th:if="${d.hod == null}">-</span>
+                    </td>
+
+                    <!-- Phone -->
+                    <td>
+                        <span th:if="${d.hod != null}" th:text="${d.hod.phone}"></span>
+                        <span th:if="${d.hod == null}">-</span>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                        <span th:if="${d.hod != null}" class="badge bg-success">
+                            ACTIVE HOD
+                        </span>
+
+                        <span th:if="${d.hod == null}" class="badge bg-warning text-dark">
+                            NO HOD
+                        </span>
+                    </td>
+
+                    <!-- Actions -->
+                    <td>
+
+                        <!-- CHANGE HOD -->
+						<a th:if="${d.hod != null}"
+						   th:href="@{'/worker/edit/' + ${d.hod.id}}"
+						   class="btn btn-primary btn-sm">
+						    <i class="bi bi-pencil"></i> Change
+						</a>
+
+                        <!-- DELETE HOD -->
+                        <a th:if="${d.hod != null}"
+                           th:href="@{'/worker/delete/' + ${d.hod.id}}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete this HOD? Department will have NO HOD.')">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+
+                        <!-- NO ACTION -->
+                        <span th:if="${d.hod == null}" class="badge bg-warning text-dark">
+                            <a style="text-decoration: none; color: black; font-size: 19px;" href="/addWorker">Action Needed!!!</a>
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

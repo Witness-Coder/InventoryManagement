@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Worker</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" th:href="@{/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css}">
+	   <link rel="stylesheet" th:href="@{/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css}">
+
+    <style>
+
+        body{
+            background: #f4f6f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .edit-card{
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .page-title{
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #343a40;
+        }
+
+        .form-label{
+            font-weight: 500;
+        }
+
+        .form-control{
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .btn-save{
+            border-radius: 10px;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .department-box{
+            background: #e9ecef;
+            border-radius: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px){
+
+            .edit-card{
+                padding: 20px;
+            }
+
+            .page-title{
+                font-size: 22px;
+            }
+
+            .btn-save{
+                font-size: 14px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="edit-card">
+
+    <h3 class="text-center page-title">
+        <i class="bi bi-person-gear"></i>
+        Update Worker (HOD)
+    </h3>
+
+    <form th:action="@{/worker/update}"
+          method="post"
+          th:object="${worker}">
+
+        <!-- ID -->
+        <input type="hidden" th:field="*{id}"/>
+
+        <!-- NAME -->
+        <div class="mb-3">
+            <label class="form-label">
+                <i class="bi bi-person"></i> Full Name
+            </label>
+
+            <input class="form-control"
+                   th:field="*{name}"
+                   placeholder="Enter full name">
+        </div>
+
+        <!-- EMAIL -->
+        <div class="mb-3">
+            <label class="form-label">
+                <i class="bi bi-envelope"></i> Email
+            </label>
+
+            <input type="email"
+                   class="form-control"
+                   th:field="*{email}"
+                   placeholder="Enter email">
+        </div>
+
+        <!-- PHONE -->
+        <div class="mb-3">
+            <label class="form-label">
+                <i class="bi bi-telephone"></i> Phone
+            </label>
+
+            <input class="form-control"
+                   th:field="*{phone}"
+                   placeholder="Enter phone number">
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="mb-3">
+            <label class="form-label">
+                <i class="bi bi-lock"></i> Password
+            </label>
+
+            <input type="password"
+                   class="form-control"
+                   th:field="*{password}"
+                   placeholder="Enter new password">
+        </div>
+
+        <!-- DEPARTMENT -->
+        <div class="mb-4">
+            <label class="form-label">
+                <i class="bi bi-building"></i> Department
+            </label>
+
+            <input class="form-control department-box"
+                   th:value="${worker.department.deptName}"
+                   disabled>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="d-grid gap-2">
+
+            <button class="btn btn-success btn-save">
+                <i class="bi bi-check-circle"></i>
+                Save Changes
+            </button>
+
+            <a href="/hods" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i>
+                Back
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

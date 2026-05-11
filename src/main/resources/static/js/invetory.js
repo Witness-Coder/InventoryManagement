@@ -55,22 +55,43 @@ function closeImagePopup(popupId = 'imagePopup') {
     if(popup) popup.style.display = 'none';
 }
 
-// Admin image live upload
 function uploadProfileImage(input) {
-    if (input.files && input.files[0]) {
-        const formData = new FormData();
-        formData.append("imageFile", input.files[0]);
+    const file = input.files[0];
+    if (!file) return;
 
-        fetch('/updateAdminImage', { method: 'POST', body: formData })
-        .then(res => res.text())
-        .then(result => {
-            if(result === "success") {
-                const profileImg = document.getElementById("profilePic");
-                if(profileImg) profileImg.src = URL.createObjectURL(input.files[0]);
+    const formData = new FormData();
+    formData.append("imageFile", file);
+
+    fetch('/updateAdminImage', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.text();
+        } else {
+            throw new Error("Upload failed");
+        }
+    })
+    .then(result => {
+        if (result === "success") {
+
+            // update image instantly (no refresh)
+            const profileImg = document.getElementById("adminProfileImg");
+
+            if (profileImg) {
+                profileImg.src = URL.createObjectURL(file);
             }
-        })
-        .catch(err => console.error("Upload error:", err));
-    }
+
+            alert("Profile image updated successfully!");
+        } else {
+            alert("Upload failed!");
+        }
+    })
+    .catch(error => {
+        console.error("Upload error:", error);
+        alert("Error uploading image.");
+    });
 }
 
 // Worker image live upload
